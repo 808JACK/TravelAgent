@@ -27,9 +27,10 @@ option = st.sidebar.radio("Choose an option:", ("Planner", "Train"))
 
 # Initialize agents
 if groq_api_key and serp_api_key:
+
     research = Agent(
         name="plane_agent",
-        role="Searches for travel destinations, activities, and accommodations based on user preferences",
+        role="Searches for travel destinations, activities, and accommodations",
         model=Groq("deepseek-r1-distill-llama-70b", api_key=groq_api_key),
         description=dedent(
             """
@@ -39,10 +40,8 @@ if groq_api_key and serp_api_key:
             """
         ),
         instructions=[
-            "Given a travel destination and the number of days the user wants to travel for, first generate a list of 3 search terms related to that destination and the number of days.",
-            "For each search term, `search_google` and analyze the results.",
-            "From the results of all searches, return the 10 most relevant results to the user's preferences.",
-            "Focus on providing concise, high-quality results without internal reasoning or commentary.",
+            "Generate 3 search terms for the destination and days.",
+            "Search Google for each term and return the top 10 results.",
         ],
         tools=[SerpApiTools(api_key=serp_api_key)],
         add_datetime_to_instructions=True,
